@@ -1,4 +1,5 @@
 let casillas = 6;
+let estadoJuego = "configurando"
 const jugadores = [
     {
         jugador: 1,
@@ -50,7 +51,25 @@ const generarTableros = () => {
 
             for (let j = 0; j < casillas; j++) {
                 const HTMLcolumna = document.createElement("td")
-                HTMLcolumna.textContent = "x"
+                
+                
+                HTMLcolumna.addEventListener('click', (event) => {
+
+                    if(HTMLcolumna.classList.contains('jugando')){
+                        determinarBarco(HTMLcolumna, event)
+                        return;
+                    }
+
+                    if(HTMLcolumna.classList.contains('barco')){
+                        HTMLcolumna.classList.remove('barco')
+                    }else{
+                        HTMLcolumna.classList.add('barco')
+                    }
+
+                })
+                
+                
+                
                 HTMLfila.append(HTMLcolumna)
             }
 
@@ -110,9 +129,17 @@ const mensajeJugadorConfigurando = (jugador) => {
 
 
 
-
+/*
 document.body.addEventListener('click', (event) => {
-    
+    aplicarExplosion()
+    setTimeout(() => {
+        animarMuerte(event)
+    }, 300);
+})
+*/
+
+
+const animarMuerte = (event) => {
     sonidosDerribo[Math.floor(Math.random() * sonidosDerribo.length)].play()
 
     const x = event.clientX / window.innerWidth;
@@ -124,9 +151,44 @@ document.body.addEventListener('click', (event) => {
     scalar: 4,
     shapes: ["emoji"],
     shapeOptions: {
-      emoji: {
-        value: ["💀", "🔥", "⚰️"],
-      },
-    },
-  });
+        emoji: {
+            value: ["💀", "🔥", "⚰️"],
+        },
+        },
+    });
+}
+
+
+const aplicarExplosion = () => {
+    const explosion = document.createElement('div')
+    explosion.classList.add('explosion')
+    document.body.append(explosion)
+
+    setTimeout(() => {
+        explosion.remove();
+    }, 300);
+}
+
+
+
+const botonComenzar = document.querySelector('#comenzar')
+botonComenzar.addEventListener('click', () => {
+    estadoJuego = "jugando"
+
+    for (const casilla of document.querySelectorAll('td')) {
+        casilla.classList.add('jugando')
+    }
 })
+
+
+const determinarBarco = (casilla, event) => {
+
+    if(casilla.classList.contains('barco')){
+        aplicarExplosion()
+        setTimeout(() => {
+            animarMuerte(event)
+        }, 300);
+        casilla.classList.add('muerto')
+    }
+
+}

@@ -51,6 +51,20 @@ body {
         width: 150px;
         height: 150px;
 
+        &.barco:not(.jugando) {
+          background: url("recursos/vectores/river-ship-svgrepo-com.svg");
+          background-size: 80%;
+          background-repeat: no-repeat;
+          background-position: center;
+        }
+        &.barco.muerto {
+          background: url("recursos/vectores/lifesaver-handmade-symbol-svgrepo-com.svg");
+          background-size: 80%;
+          background-repeat: no-repeat;
+          background-position: center;
+          pointer-events: none;
+        }
+
         &:hover {
           cursor: pointer;
           background-color: greenyellow;
@@ -67,4 +81,24 @@ body {
 .alerta-jugador {
   color: white;
   pointer-events: none !important;
+}
+
+.explosion {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #000b;
+  z-index: 2;
+  animation: explosion 80ms linear infinite;
+}
+
+@keyframes explosion {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
